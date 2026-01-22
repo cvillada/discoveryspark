@@ -1,0 +1,62 @@
+Esta documentação consolida a visão estratégica, arquitetural e funcional do DiscoverySpark. O objetivo aqui é fornecer uma visão clara de como o projeto transforma dados brutos em inteligência acionável, servindo como uma base sólida para apresentações ou expansões futuras.
+
+📑 Documentação Estratégica: DiscoverySpark
+1. Visão Geral
+O DiscoverySpark é uma engine de Automated Feature Engineering (AFE) e Discovery Analytics. A ideia central é democratizar a ciência de dados complexa, permitindo que usuários de negócios ou analistas identifiquem padrões ocultos em bases de dados relacionais sem a necessidade de escrever queries SQL exaustivas ou modelos de ML complexos manualmente.
+
+2. O Problema vs. A Solução
+O Problema: Em bancos de dados relacionais, os insights mais valiosos estão escondidos no cruzamento entre tabelas (Pai x Filho). Extrair isso exige muito tempo de engenharia de dados.
+
+A Solução DiscoverySpark: Utiliza a tecnologia de Deep Feature Synthesis (DFS) para criar milhares de hipóteses estatísticas automaticamente, testá-las contra um alvo (Target) e traduzir as melhores para linguagem humana.
+
+3. Arquitetura do Sistema
+O projeto é dividido em quatro camadas fundamentais:
+
+A. Camada de Ingestão e Mapeamento
+O sistema lê arquivos CSV e interpreta um arquivo de configuração semântica (mapeamento.txt). Isso permite que o motor entenda quem é a entidade principal (Pai) e onde estão os eventos detalhados (Filho).
+
+B. Camada de Síntese (The Engine)
+Utilizando o framework Featuretools, o DiscoverySpark realiza agregações profundas.
+
+Exemplo: Se a tabela pai é Clientes e a filha é Vendas, a engine cria automaticamente métricas como: "Média de valor nos últimos 30 dias", "Soma total de compras no fim de semana", etc.
+
+C. Camada Analítica e Direcionamento
+Diferente de um modelo de "caixa preta", o DiscoverySpark foca em Explicabilidade:
+
+Random Forest: Para medir o poder explicativo (Importância).
+
+Correlação de Pearson: Para definir a "Direção do Insight" (se o comportamento ajuda ou atrapalha o resultado final).
+
+D. Camada de Tradução e Consumo (Interface)
+Os nomes técnicos são convertidos por um motor semântico para o Dashboard. O resultado não é SUM(vendas.valor), mas sim "Soma total de valor em vendas".
+
+4. Diferenciais do DiscoverySpark
+Linguagem de Negócio: Traduz estatística pesada em frases acionáveis (Ex: "Quanto maior este valor, menor a chance de Churn").
+
+Visualização Ágil: Dashboard via terminal que permite auditoria rápida de resultados.
+
+Portabilidade: Gera arquivos Markdown que podem ser compartilhados via GitHub, Slack ou documentações internas.
+
+Agagnóstico de Dados: Funciona para Varejo (Churn), Finanças (Risco), Logística (Atrasos) ou qualquer cenário relacional.
+
+5. Roadmap de Evolução
+Para transformar o DiscoverySpark em um produto de nível enterprise, os próximos passos sugeridos são:
+
+Análise Temporal: Adicionar janelas de tempo (Ex: "Como este comportamento mudou nos últimos 3 meses?").
+
+Interface Web: Converter o Dashboard de terminal para uma aplicação visual (Streamlit ou React).
+
+Conectores SQL: Ler dados diretamente de bancos como PostgreSQL, MySQL ou BigQuery.
+
+Sugestão de Ação: O sistema sugerir uma ação baseada no insight (Ex: "Este grupo de clientes tem alto risco, envie um cupom de desconto").
+
+6. Fluxo de Trabalho do Usuário
+Preparação: Salvar CSVs em /datasets.
+
+Configuração: Declarar a relação em mapeamento/mapeamento.txt.
+
+Processamento: Rodar app.py com o alvo desejado.
+
+Decisão: Consultar o dashboard.py para obter os 10 insights mais poderosos.
+
+DiscoverySpark — Transformando relações de dados em decisões inteligentes.

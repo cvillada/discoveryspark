@@ -1,0 +1,40 @@
+🎤 Roteiro de Pitch: DiscoverySpark
+01. O Problema (O "Gargalo" do Analista) — [1 min]
+A frase de impacto: "Hoje, 80% do tempo de um Cientista de Dados é gasto preparando dados, não gerando insights."
+
+A dor: Cruzar tabelas de Clientes com Vendas, Logística e Suporte para achar padrões é um trabalho manual, lento e sujeito a erros.
+
+O prejuízo: Enquanto o analista tenta limpar o Excel, a empresa perde o timing de evitar um Churn ou de aproveitar uma oportunidade de venda.
+
+02. A Solução (O que é o DiscoverySpark) — [1 min]
+O conceito: "O DiscoverySpark é um motor de IA que faz o trabalho sujo de 'mineração de dados' automaticamente."
+
+O diferencial: Ele não apenas processa dados, ele cria hipóteses. Ele testa milhares de combinações relacionais em segundos.
+
+A tecnologia: Baseado em Deep Feature Synthesis, o motor entende o relacionamento entre as tabelas e extrai o que há de mais relevante.
+
+03. Como Funciona (A "Mágica") — [1 min]
+Entrada Simples: Basta apontar as tabelas e dizer o que você quer prever (ex: Churn).
+
+Processamento: A engine gera novas variáveis e usa algoritmos de Machine Learning para dar nota de importância a cada uma.
+
+Saída Executiva: O sistema não entrega códigos; ele entrega um Relatório de Inteligência traduzido para o português.
+
+04. Diferenciais Competitivos — [1 min]
+Explicabilidade: Ao contrário de outras IAs, o DiscoverySpark diz por que algo é importante e qual a tendência (se aumenta ou diminui o risco).
+
+Agilidade: O que levaria dias de queries SQL, o DiscoverySpark resolve com um comando de terminal.
+
+Dashboard Nativo: Interface simplificada para consumo imediato de insights.
+
+05. Visão de Futuro e Fechamento — [1 min]
+Escalabilidade: Integração futura com Bancos de Dados em nuvem (BigQuery/AWS) e interface Web.
+
+Oportunidade: "Nossa visão é transformar o DiscoverySpark na ferramenta padrão para qualquer gestor que queira tomar decisões baseadas em dados, sem precisar ser um programador."
+
+Encerramento: "DiscoverySpark: Transformando relações de dados em decisões inteligentes. Obrigado!"
+
+Dicas para o Pitch:
+Destaque a "Tradução Semântica": Executivos adoram saber que a ferramenta fala a língua deles (ex: "Soma de Vendas" em vez de "SUM_SALES").
+
+Mostre o Dashboard: Se puder, abra o terminal e mostre as cores verde (oportunidade) e vermelho (risco). O visual ajuda a vender a facilidade de uso.

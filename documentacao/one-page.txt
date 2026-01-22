@@ -1,0 +1,44 @@
+💎 DiscoverySpark: Executive One-Pager
+"Acelerando a descoberta de insights através de Inteligência Relacional Automática."
+
+🎯 A Proposta de Valor
+O DiscoverySpark elimina o abismo entre os dados brutos armazenados em silos (tabelas) e a tomada de decisão estratégica. Através de Engenharia de Atributos Automática (AutoFE), transformamos horas de análise manual em segundos de processamento inteligente.
+
+🛑 O Problema
+Analistas e gestores perdem tempo precioso tentando cruzar dados de diferentes origens. O conhecimento está escondido nas relações (ex: como a frequência de suporte afeta o faturamento?), mas extrair isso exige habilidades avançadas em SQL e Estatística que nem todos possuem.
+
+💡 A Solução: DiscoverySpark Engine
+Nossa engine atua em três frentes principais:
+
+Síntese Profunda (DFS): Gera automaticamente milhares de métricas a partir do relacionamento entre tabelas Pai e Filho.
+
+Análise de Relevância: Utiliza Machine Learning para rankear o que realmente impacta o resultado do negócio.
+
+Tradução Semântica: Converte resultados técnicos em linguagem de negócios clara, com indicação de tendência (Risco vs. Oportunidade).
+
+🚀 Principais Funcionalidades
+Discovery Engine: Mapeamento semântico de tabelas via configuração simples.
+
+Insight Direction: Identifica se um comportamento aumenta ou diminui a probabilidade do alvo (Target).
+
+Smart Dashboard: Interface de terminal para visualização ágil e intuitiva.
+
+Agnosticismo de Dados: Aplicável a Churn, Fraude, Upsell, Logística e muito mais.
+
+📈 Diferenciais Competitivos
+Velocidade: Redução de até 90% no tempo de preparação de dados para análise.
+
+Explicabilidade: Foco total no "Porquê" por trás dos números.
+
+Simplicidade: Não exige infraestruturas complexas; roda localmente ou em nuvem.
+
+🛠️ Tecnologias Utilizadas
+Linguagem: Python
+
+Core: Featuretools (Automated Feature Engineering)
+
+ML: Scikit-Learn (Random Forest & Analytics)
+
+UI: Rich (Terminal Dashboard Rendering)
+
+Contato & Documentação Para mais detalhes sobre a implementação técnica e roadmap de conectores SQL, consulte o arquivo LEIAME.md do projeto.
