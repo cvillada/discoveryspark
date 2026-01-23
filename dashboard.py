@@ -34,7 +34,7 @@ def render_styled_markdown(content):
 def show_dashboard():
     console.clear()
     console.print(Panel.fit(
-        "📊 [bold blue]Dashboard de Insights Spark Clone[/bold blue]\n[italic]Análise de Tendências e Descobertas Relacionais[/italic]", 
+        "📊 [bold blue]Dashboard de Insights DiscoverySpark[/bold blue]\n[italic]Análise de Tendências e Descobertas Relacionais[/italic]", 
         border_style="blue"
     ))
     
@@ -73,7 +73,7 @@ def show_dashboard():
         
         Prompt.ask("\n[bold cyan]Pressione [Enter] para voltar ao menu[/bold cyan]")
         console.clear()
-        console.print(Panel.fit("📊 [bold blue]Dashboard de Insights Spark Clone[/bold blue]", border_style="blue"))
+        console.print(Panel.fit("📊 [bold blue]Dashboard de Insights DiscoverySpark[/bold blue]", border_style="blue"))
 
 if __name__ == "__main__":
     show_dashboard()

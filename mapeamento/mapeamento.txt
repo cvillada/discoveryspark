@@ -1,1 +1,1 @@
-clientes:pai|id_cliente#vendas:filho|id_cliente
+passagens_vendas:pai|id_empresa,id_aeroporto_origem,id_aeroporto_destino#empresa:filho|id_empresa#aeroporto:filha|id_aeroporto#aeroporto:filha|id_aeroporto

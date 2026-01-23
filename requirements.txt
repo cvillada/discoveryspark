@@ -1,5 +1,16 @@
+# DiscoverySpark - Dependências do Projeto
+# Python 3.10, 3.11 ou 3.12.4
+
+# Análise de dados e machine learning
 pandas
-featuretools
 numpy
-rich
 scikit-learn
+
+# Feature engineering e automação de features
+featuretools
+
+# Interface rica no terminal e visualização
+rich
+
+# Comunicação com APIs (necessário para analise_profunda.py)
+requests

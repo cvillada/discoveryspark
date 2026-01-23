@@ -1,7 +1,7 @@
 @echo off
 cls
 echo =========================================
-echo       FLUXO AUTOMATIZADO SPARK CLONE
+echo       FLUXO AUTOMATIZADO DISCOVERYSPARK
 echo =========================================
 
 echo.
