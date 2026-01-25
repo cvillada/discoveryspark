@@ -20,8 +20,15 @@ class DeepSeekAPIClient:
             "Content-Type": "application/json"
         }
     
-    def chat_completion(self, messages: List[Dict[str, str]], model: str = "deepseek-chat") -> str:
+    def chat_completion(self, messages: List[Dict[str, str]], model: str = "deepseek-reasoner") -> str:
         url = f"{self.base_url}/chat/completions"
+        
+        # Configurar timeout baseado no modelo
+        if model == "deepseek-reasoner":
+            timeout_config = (30, 180)  # connect timeout 30s, read timeout 180s
+        else:
+            timeout_config = (30, 120)  # connect timeout 30s, read timeout 120s
+        
         payload = {
             "model": model,
             "messages": messages,
@@ -29,17 +36,29 @@ class DeepSeekAPIClient:
             "max_tokens": 2000
         }
         
-        try:
-            response = requests.post(url, headers=self.headers, json=payload, timeout=60)
-            response.raise_for_status()
-            result = response.json()
-            return result["choices"][0]["message"]["content"]
-        except requests.exceptions.Timeout:
-            return self._gerar_resposta_fallback(messages)
-        except requests.exceptions.RequestException as e:
-            return f"Erro na comunicação com a API: {str(e)}\n\n{self._gerar_resposta_fallback(messages)}"
-        except (KeyError, IndexError) as e:
-            return f"Erro ao processar resposta da API: {str(e)}\n\n{self._gerar_resposta_fallback(messages)}"
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                response = requests.post(url, headers=self.headers, json=payload, timeout=timeout_config)
+                response.raise_for_status()
+                result = response.json()
+                return result["choices"][0]["message"]["content"]
+            except requests.exceptions.Timeout:
+                if attempt < max_retries - 1:
+                    wait_time = 2 ** attempt  # backoff exponencial: 1, 2, 4 segundos
+                    import time
+                    time.sleep(wait_time)
+                    continue
+                return f"Timeout após {max_retries} tentativas. O modelo '{model}' pode estar muito lento ou a conexão está instável.\n\n{self._gerar_resposta_fallback(messages)}"
+            except requests.exceptions.RequestException as e:
+                if attempt < max_retries - 1:
+                    wait_time = 2 ** attempt
+                    import time
+                    time.sleep(wait_time)
+                    continue
+                return f"Erro na comunicação com a API após {max_retries} tentativas: {str(e)}\n\n{self._gerar_resposta_fallback(messages)}"
+            except (KeyError, IndexError) as e:
+                return f"Erro ao processar resposta da API: {str(e)}\n\n{self._gerar_resposta_fallback(messages)}"
     
     def _gerar_resposta_fallback(self, messages: List[Dict[str, str]]) -> str:
         user_content = messages[-1]["content"] if messages else ""
@@ -252,11 +271,19 @@ class SeniorEstrategista:
         }
 
 class AnaliseProfunda:
-    def __init__(self, api_key: str):
-        self.api_client = DeepSeekAPIClient(api_key)
+    def __init__(self, api_key: str, model: str = "deepseek-reasoner"):
+        # Criar cliente API com modelo personalizado
+        class DeepSeekAPIClientPersonalizado(DeepSeekAPIClient):
+            def chat_completion(self, messages: List[Dict[str, str]], model_param: str = None) -> str:
+                # Usar o modelo especificado no construtor
+                model_to_use = model if model_param is None else model_param
+                return super().chat_completion(messages, model_to_use)
+        
+        self.api_client = DeepSeekAPIClientPersonalizado(api_key)
         self.analisador = SeniorAnalisadorInsights(self.api_client)
         self.estrategista = SeniorEstrategista(self.api_client)
         self.console = Console()
+        self.model = model
     
     def listar_arquivos_resultados(self, resultados_dir: str = "resultados") -> Tuple[List[str], List[str]]:
         arquivos_md = sorted(glob.glob(os.path.join(resultados_dir, "*.md")), reverse=True)
@@ -353,9 +380,13 @@ class AnaliseProfunda:
             return
         
         self.console.print("\n[bold]3. ANALISANDO DADOS COM AGENTE SENIOR ANALISADOR DE INSIGHTS...[/bold]")
+        self.console.print(f"   [dim]Usando modelo: {self.model}[/dim]")
+        self.console.print("   [yellow]⏳ Isso pode levar alguns minutos...[/yellow]")
         analise_result = self.analisador.analisar_arquivos(md_content, csv_data)
         
         self.console.print("\n[bold]4. GERANDO ESTRATÉGIA COM AGENTE SENIOR ESTRATEGISTA...[/bold]")
+        self.console.print(f"   [dim]Usando modelo: {self.model}[/dim]")
+        self.console.print("   [yellow]⏳ Gerando estratégia...[/yellow]")
         estrategia_result = self.estrategista.criar_estrategia(analise_result)
         
         self.console.print("\n[bold]5. CONSOLIDANDO RECOMENDAÇÕES...[/bold]")
@@ -457,7 +488,43 @@ def main():
     
     console.print("[bold green]✅ Chave de API configurada com sucesso![/bold green]")
     
-    analise_profunda = AnaliseProfunda(api_key)
+    # Seleção de modelo
+    console.print("\n" + "=" * 80)
+    console.print(Panel.fit(
+        "[bold cyan]🤖 SELEÇÃO DE MODELO DE IA[/bold cyan]\n\n"
+        "Escolha o modelo de IA que deseja usar para a análise:\n\n"
+        "[bold]1. deepseek-reasoner[/bold] - Modelo avançado com raciocínio profundo\n"
+        "   • Mais lento (até 3 minutos)\n"
+        "   • Análise mais detalhada e estratégica\n"
+        "   • Recomendado para decisões complexas\n\n"
+        "[bold]2. deepseek-chat[/bold] - Modelo padrão mais rápido\n"
+        "   • Mais rápido (até 2 minutos)\n"
+        "   • Respostas mais diretas\n"
+        "   • Recomendado para análises rápidas\n",
+        border_style="cyan"
+    ))
+    
+    modelo_escolha = Prompt.ask(
+        "[bold yellow]Escolha o modelo (1 ou 2)[/bold yellow]",
+        choices=["1", "2"],
+        default="1"
+    )
+    
+    if modelo_escolha == "1":
+        modelo = "deepseek-reasoner"
+        console.print("[bold green]✓ Modelo selecionado: deepseek-reasoner (raciocínio profundo)[/bold green]")
+    else:
+        modelo = "deepseek-chat"
+        console.print("[bold green]✓ Modelo selecionado: deepseek-chat (análise rápida)[/bold green]")
+    
+    # Criar instância de AnaliseProfunda com o modelo escolhido
+    analise_profunda = AnaliseProfunda(api_key, modelo)
+    
+    # Adicionar informação do modelo ao início da execução
+    analise_profunda.console.print(f"\n[bold cyan]🔧 Configuração:[/bold cyan] Usando modelo [bold]{modelo}[/bold]")
+    if modelo == "deepseek-reasoner":
+        analise_profunda.console.print("[yellow]⚠️  Nota:[/yellow] Este modelo pode levar até 3 minutos para processar análises complexas.")
+    
     analise_profunda.executar_analise()
 
 if __name__ == "__main__":
